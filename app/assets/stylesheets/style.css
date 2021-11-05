@@ -1,0 +1,10 @@
+body .page {
+	margin-left:2em;
+	margin-right:2em;
+}
+.head {
+	background-color:#17abcc; 
+	text-align:center;
+	color:white;
+	padding:16px 16px;
+}

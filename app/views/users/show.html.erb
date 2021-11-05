@@ -1,0 +1,66 @@
+<div class="page">
+	<span>Hi <strong><%= @user.name %></strong>,</span><span class='pull-right'><%= link_to "Logout", logout_path, method: "delete" %></span>
+	<br><br>
+	<span>Check out our category and their products:</span><br><br>
+	<div ng-app="App" ng-controller="Product">
+		<div class="form-group"> 
+			<div class="row">
+		       <div class="col-xs-2 btn"><strong>Select Category</strong></div>
+		       <div class="col-xs-8"> 
+		          <select class="form-control" ng-model="selectcategory" ng-options= "item.category for item in category"> </select>
+		       </div>
+		    </div> 
+		</div>	
+		<div><input type="text" ng-model="search_prod"  placeholder="search by product" class="pull-right"/>
+		</div>
+		<br><br>
+		<div class="row">
+	  		<div class="col-xs-12">
+				<table class="table table-striped table-condensed table-bordered table-responsive FundDetails" style="">
+					<thead>
+						<tr>
+							<th>Fund Name</th>
+			    			<th>Rating</th>
+			    			<th>Category</th>
+			    			<th>No of User click</th>
+			    			<th>Total clicks</th>
+						</tr>
+					</thead>
+					<tbody>		
+						<tr ng-repeat="x in product | filter: { category:selectcategory.category, s_name: search_prod }">
+							<td><a href="/Product/{{x.schemecode}}">{{ x.s_name }}</td>
+							<td>{{ x.rating  }}</td>
+							<td>{{ x.category }}</td>
+							<td>{{ x.count }}</td>
+							<td>{{ x.clicks  }}</td>	
+						</tr>		
+					</tbody>
+				</table>
+	  		</div>	
+	 	</div>    	 
+	</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script>
+angular.module('App', [])
+.controller('Product', function($scope,$http) 
+{
+	$http.get("/products/disp_product")
+    .then(function (response) 
+    {
+    	console.log(response);
+    	if(response.data.category!="error")
+    	{
+	    	$scope.category=response.data.category;
+	    	$scope.selectcategory=response.data.category[0];
+	    	$scope.product=response.data.product;
+	    }
+	    else
+	    {
+	    	alert("Please try again later")
+	    } 
+
+
+    });
+});
+</script>
